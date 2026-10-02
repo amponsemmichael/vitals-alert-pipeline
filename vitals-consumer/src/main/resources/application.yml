@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: vitals-consumer
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: vitals-consumer-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      enable-auto-commit: false
+      properties:
+        spring.json.trusted.packages: "com.vitals.*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.vitals.consumer.messaging.VitalsReadingMessage
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      properties:
+        spring.json.add.type.headers: false
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/vitals}
+
+server:
+  port: ${SERVER_PORT:8081}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  structured:
+    format:
+      console: ecs
+  level:
+    root: INFO
+    com.vitals: INFO
+
+kafka:
+  topics:
+    vitals-raw: vitals-raw
+    vitals-alerts: vitals-alerts
+    vitals-dlt: vitals-dlt
+
+retry:
+  backoff:
+    initial-interval-ms: 500
+    multiplier: 2.0
+    max-attempts: 4

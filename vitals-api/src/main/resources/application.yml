@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: vitals-api
+
+  security:
+    user:
+      name: ${API_USERNAME:vitals-user}
+      password: ${API_PASSWORD}
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+      properties:
+        enable.idempotence: true
+        spring.json.add.type.headers: false
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  structured:
+    format:
+      console: ecs
+  level:
+    root: INFO
+    com.vitals: INFO
+
+kafka:
+  topics:
+    vitals-raw: vitals-raw
