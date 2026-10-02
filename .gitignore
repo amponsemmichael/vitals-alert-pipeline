@@ -1,0 +1,31 @@
+.env
+.env.local
+*.env
+
+# Maven
+target/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.DS_Store
+
+# Certs (generated locally)
+**/certs/
+**/*.pem
+**/*.key
+**/*.crt
+**/*.p12
+**/*.jks
+
+# Logs
+*.log
+logs/
+
+# Docker volumes
+mongo-data/
+kafka-data/
