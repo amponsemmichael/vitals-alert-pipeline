@@ -49,8 +49,8 @@ services:
   # ── vitals-api ──────────────────────────────────────────────────────────────
   vitals-api:
     build:
-      context: ./vitals-api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: vitals-api/Dockerfile
     container_name: vitals-api
     ports:
       - "${VITALS_API_PORT:-8080}:8080"
@@ -72,8 +72,8 @@ services:
   # ── vitals-consumer ─────────────────────────────────────────────────────────
   vitals-consumer:
     build:
-      context: ./vitals-consumer
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: vitals-consumer/Dockerfile
     container_name: vitals-consumer
     ports:
       - "${VITALS_CONSUMER_PORT:-8081}:8081"
